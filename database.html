@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClaimCheck — Product Database</title>
+  <meta name="description" content="Search our public database of evaluated supplement products. See scientific accuracy scores, label grades, and full evidence breakdowns." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ─── Database-specific styles ─────────────────────────────── */
+    .db-hero {
+      background: var(--navy);
+      padding: 7rem 2rem 4rem;
+    }
+    .db-hero h1 { color: white; }
+    .db-hero p  { color: rgba(255,255,255,0.65); font-size: 1.0625rem; max-width: 560px; margin-top: 1rem; }
+
+    .db-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .db-stat-item { text-align: left; }
+    .db-stat-num  { font-size: 1.75rem; font-weight: 900; color: var(--green); letter-spacing: -0.03em; line-height: 1; }
+    .db-stat-lbl  { font-size: 0.75rem; color: rgba(255,255,255,0.45); font-weight: 500; margin-top: 0.2rem; }
+
+    /* ─── Toolbar ───────────────────────────────────────────────── */
+    .db-toolbar {
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      padding: 1.25rem 2rem;
+      position: sticky;
+      top: var(--nav-h);
+      z-index: 100;
+    }
+    .db-toolbar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .db-search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+    .db-search-wrap svg {
+      position: absolute;
+      left: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      stroke: var(--gray-400);
+      pointer-events: none;
+    }
+    .db-search {
+      width: 100%;
+      padding: 0.65rem 1rem 0.65rem 2.5rem;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      font-size: 0.9375rem;
+      font-family: inherit;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .db-search:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(46,204,113,0.12);
+    }
+    .db-filter-btn {
+      padding: 0.65rem 1.1rem;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      background: white;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .db-filter-btn:hover,
+    .db-filter-btn.active {
+      border-color: var(--navy);
+      color: var(--navy);
+      background: var(--gray-50);
+    }
+    .db-filter-btn.active {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy);
+    }
+    .db-count {
+      font-size: 0.8125rem;
+      color: var(--gray-400);
+      white-space: nowrap;
+      margin-left: auto;
+    }
+
+    /* ─── Table ─────────────────────────────────────────────────── */
+    .db-section {
+      padding: 2.5rem 2rem 5rem;
+      background: var(--gray-50);
+      min-height: 60vh;
+    }
+    .db-table-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead {
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    thead th {
+      padding: 0.875rem 1.25rem;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gray-600);
+      white-space: nowrap;
+    }
+    thead th:last-child { text-align: center; }
+    tbody tr {
+      border-bottom: 1px solid var(--gray-100);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(46,204,113,0.04); }
+    tbody td {
+      padding: 1.1rem 1.25rem;
+      vertical-align: middle;
+    }
+
+    .td-product-name {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.3;
+    }
+    .td-product-brand {
+      font-size: 0.75rem;
+      color: var(--gray-400);
+      margin-top: 0.15rem;
+      font-weight: 500;
+    }
+    .td-claims {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      max-width: 240px;
+      line-height: 1.55;
+    }
+
+    /* Score bar */
+    .score-wrap { display: flex; align-items: center; gap: 0.75rem; }
+    .score-num  { font-size: 1rem; font-weight: 800; color: var(--navy); min-width: 28px; }
+    .score-bar-track {
+      width: 72px;
+      height: 6px;
+      background: var(--gray-200);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 0.4s ease;
+    }
+    .fill-green  { background: var(--green); }
+    .fill-orange { background: var(--orange); }
+    .fill-red    { background: var(--red); }
+
+    /* Grade badge */
+    .grade-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+    .grade-a  { background: rgba(46,204,113,0.12);  color: #1a8045; border: 1.5px solid rgba(46,204,113,0.3); }
+    .grade-b  { background: rgba(245,166,35,0.12);  color: #8a5c00; border: 1.5px solid rgba(245,166,35,0.3); }
+    .grade-c  { background: rgba(231,76,60,0.10);   color: #b92a18; border: 1.5px solid rgba(231,76,60,0.25); }
+
+    .td-meaning {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      max-width: 230px;
+      line-height: 1.55;
+    }
+    .td-arrow {
+      text-align: center;
+      color: var(--gray-400);
+      font-size: 1rem;
+      transition: color 0.2s, transform 0.2s;
+    }
+    tbody tr:hover .td-arrow { color: var(--green); transform: translateX(3px); }
+
+    .no-results {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--gray-400);
+      font-size: 0.9375rem;
+      display: none;
+    }
+
+    /* ─── Modal ─────────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,22,40,0.65);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+      overflow-y: auto;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal {
+      background: white;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 780px;
+      box-shadow: 0 24px 80px rgba(10,22,40,0.22);
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      overflow: hidden;
+      margin: auto;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-header {
+      background: var(--navy);
+      padding: 1.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .modal-header-left { flex: 1; }
+    .modal-product-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: white;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+    .modal-product-meta {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 0.25rem;
+    }
+    .modal-close {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      font-size: 1.125rem;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.18); }
+
+    .modal-score-bar {
+      background: var(--navy-mid);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .modal-score-block { display: flex; align-items: center; gap: 1rem; }
+    .modal-score-num {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: white;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .modal-score-label { font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.2rem; }
+    .modal-score-track {
+      flex: 1;
+      min-width: 120px;
+      height: 8px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .modal-score-fill { height: 100%; border-radius: 100px; }
+    .modal-grade-big {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 900;
+    }
+
+    .modal-body { padding: 2rem; }
+
+    .modal-section { margin-bottom: 2rem; }
+    .modal-section:last-child { margin-bottom: 0; }
+    .modal-section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gray-400);
+      margin-bottom: 0.875rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .ingredient-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .ingredient-pill {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 100px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--navy);
+    }
+
+    .claim-block {
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 0.875rem;
+    }
+    .claim-block:last-child { margin-bottom: 0; }
+    .claim-block-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.875rem;
+    }
+    .claim-block-text {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.35;
+    }
+    .claim-block-score-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .chip-green  { background: rgba(46,204,113,0.12); color: #1a8045; border: 1px solid rgba(46,204,113,0.25); }
+    .chip-orange { background: rgba(245,166,35,0.12); color: #8a5c00; border: 1px solid rgba(245,166,35,0.25); }
+    .chip-red    { background: rgba(231,76,60,0.10);  color: #b92a18; border: 1px solid rgba(231,76,60,0.22); }
+
+    .studies-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+      margin-top: 0.75rem;
+    }
+    .studies-label.support { color: #1a8045; }
+    .studies-label.against { color: #b92a18; }
+    .study-item {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      padding-left: 0.875rem;
+      border-left: 2px solid var(--gray-200);
+      margin-bottom: 0.4rem;
+    }
+    .study-item.support { border-left-color: rgba(46,204,113,0.4); }
+    .study-item.against { border-left-color: rgba(231,76,60,0.35); }
+    .study-meta {
+      font-size: 0.7rem;
+      color: var(--gray-400);
+      display: block;
+      margin-top: 0.1rem;
+    }
+
+    .justification-box {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .methodology-note {
+      font-size: 0.775rem;
+      color: var(--gray-400);
+      line-height: 1.65;
+      padding: 0.875rem 1rem;
+      background: var(--gray-50);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--gray-200);
+    }
+
+    /* ─── Responsive ────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .td-meaning, .td-claims { display: none; }
+    }
+    @media (max-width: 680px) {
+      thead th:nth-child(2) { display: none; }
+      tbody td:nth-child(2) { display: none; }
+      .db-toolbar-inner { gap: 0.625rem; }
+      .modal-body { padding: 1.25rem; }
+      .modal-header { padding: 1.25rem; }
+      .modal-score-bar { padding: 1rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Navigation ─────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Claim<span>Check</span></a>
+    <ul class="nav-links">
+      <li><a href="the-problem.html">The Problem</a></li>
+      <li><a href="for-businesses.html">For Businesses</a></li>
+      <li><a href="for-consumers.html">For Consumers</a></li>
+      <li><a href="database.html" style="color:var(--green);font-weight:700;">Database</a></li>
+      <li><a href="index.html#contact" class="nav-cta">Get Certified</a></li>
+    </ul>
+    <button class="nav-burger" id="burger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-drawer" id="drawer">
+  <a href="the-problem.html">The Problem</a>
+  <a href="for-businesses.html">For Businesses</a>
+  <a href="for-consumers.html">For Consumers</a>
+  <a href="database.html" style="color:var(--green);font-weight:700;">Database</a>
+  <a href="index.html#contact" class="cta-link">Get Certified &rarr;</a>
+</div>
+
+<!-- ─── Hero ───────────────────────────────────────────────────── -->
+<section class="db-hero">
+  <div class="container">
+    <p class="eyebrow fade-in">Public Database</p>
+    <h1 class="fade-in delay-1">Every product. Every claim.<br>Full transparency.</h1>
+    <p class="fade-in delay-2">
+      All evaluations are published here, whether or not a manufacturer engaged with us.
+      Click any product to see the full evidence breakdown, ingredient list, and score justification.
+    </p>
+    <div class="db-stats fade-in delay-3">
+      <div class="db-stat-item">
+        <div class="db-stat-num">128</div>
+        <div class="db-stat-lbl">Products evaluated</div>
+      </div>
+      <div class="db-stat-item">
+        <div class="db-stat-num">341</div>
+        <div class="db-stat-lbl">Claims reviewed</div>
+      </div>
+      <div class="db-stat-item">
+        <div class="db-stat-num">47%</div>
+        <div class="db-stat-lbl">Claims with strong evidence</div>
+      </div>
+      <div class="db-stat-item">
+        <div class="db-stat-num">2026</div>
+        <div class="db-stat-lbl">Last updated</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Toolbar ────────────────────────────────────────────────── -->
+<div class="db-toolbar">
+  <div class="db-toolbar-inner">
+    <div class="db-search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" class="db-search" id="searchInput" placeholder="Search product or claim&hellip;" />
+    </div>
+    <button class="db-filter-btn active" data-filter="all">All</button>
+    <button class="db-filter-btn" data-filter="a">A Grade</button>
+    <button class="db-filter-btn" data-filter="b">B Grade</button>
+    <button class="db-filter-btn" data-filter="c">C Grade</button>
+    <span class="db-count" id="resultCount">10 products</span>
+  </div>
+</div>
+
+<!-- ─── Table ──────────────────────────────────────────────────── -->
+<section class="db-section">
+  <div class="db-table-wrap">
+    <table id="dbTable">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Health Claims</th>
+          <th>Score</th>
+          <th>Label</th>
+          <th class="td-meaning">Assessment</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="dbBody">
+        <!-- Rows injected by JS -->
+      </tbody>
+    </table>
+    <div class="no-results" id="noResults">No products match your search.</div>
+  </div>
+</section>
+
+<!-- ─── Modal ─────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-product-name" id="mName"></div>
+        <div class="modal-product-meta" id="mMeta"></div>
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-score-bar">
+      <div class="modal-score-block">
+        <div>
+          <div class="modal-score-num" id="mScore"></div>
+          <div class="modal-score-label">/ 100 Score</div>
+        </div>
+        <div class="modal-score-track">
+          <div class="modal-score-fill" id="mScoreFill"></div>
+        </div>
+      </div>
+      <div class="modal-grade-big" id="mGradeBig"></div>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
+<!-- ─── Footer ────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">Claim<span>Check</span></span>
+    <nav class="footer-links">
+      <a href="the-problem.html">The Problem</a>
+      <a href="for-businesses.html">For Businesses</a>
+      <a href="for-consumers.html">For Consumers</a>
+      <a href="database.html">Database</a>
+      <a href="index.html#contact">Get Certified</a>
+    </nav>
+  </div>
+  <p class="footer-copy">&copy; 2026 ClaimCheck. All rights reserved. &middot; <a href="mailto:hello@claimcheck.com">hello@claimcheck.com</a></p>
+</footer>
+
+<script>
+// ─── Data ──────────────────────────────────────────────────────────
+const products = [
+  {
+    id: 1,
+    name: "Vitamin D3 2000 IU",
+    brand: "SunSource Nutrition",
+    category: "Vitamin · Capsule · 60 servings",
+    score: 91,
+    grade: "A",
+    claims: ["Supports bone health", "Promotes immune function"],
+    meaning: "Strong evidence supports both claims at this dosage. Well-established mechanism and replicated trial data.",
+    ingredients: ["Cholecalciferol (Vitamin D3) 2000 IU", "Olive Oil", "Gelatin Capsule", "Glycerin"],
+    claimDetails: [
+      {
+        text: "Supports bone health",
+        score: 95,
+        chip: "chip-green",
+        chipLabel: "Strong Evidence",
+        supporting: [
+          { ref: "Lips P. et al. (2010)", journal: "Journal of Steroid Biochemistry", note: "Large RCT: Vitamin D3 supplementation significantly improved bone mineral density in adults over 50 vs placebo." },
+          { ref: "Bischoff-Ferrari H.A. et al. (2012)", journal: "NEJM", note: "Meta-analysis of 11 double-blind RCTs. D3 supplementation reduced hip fracture risk by 30% at doses ≥800 IU/day." },
+          { ref: "Institute of Medicine Report (2011)", journal: "National Academies Press", note: "Consensus review confirming calcium and vitamin D's role in bone health with strong Grade A evidence." }
+        ],
+        against: [
+          { ref: "Reid I.R. et al. (2014)", journal: "Lancet", note: "Found no significant benefit in healthy adults with adequate baseline D3 levels — highlights that benefit is strongest in deficient populations." }
+        ]
+      },
+      {
+        text: "Promotes immune function",
+        score: 82,
+        chip: "chip-green",
+        chipLabel: "Strong Evidence",
+        supporting: [
+          { ref: "Martineau A.R. et al. (2017)", journal: "BMJ", note: "Individual patient data meta-analysis of 25 RCTs (n=11,321). D3 supplementation reduced acute respiratory infections, especially in deficient individuals." },
+          { ref: "Aranow C. (2011)", journal: "Journal of Investigative Medicine", note: "Comprehensive review of VDR expression in immune cells and D3's role in innate and adaptive immunity." }
+        ],
+        against: [
+          { ref: "Jolliffe D.A. et al. (2021)", journal: "Lancet Diabetes & Endocrinology", note: "Large UK trial found no reduction in COVID-19 infection or severity with D3 supplementation at 800 IU/day, suggesting dose and context dependency." }
+        ]
+      }
+    ],
+    justification: "Vitamin D3 at 2000 IU/day is one of the best-supported supplement claims in the literature. The bone health claim rests on decades of replicated trial data and is endorsed by major health bodies. The immune function claim is supported by robust mechanistic evidence and a large patient-level meta-analysis, though effect sizes are more pronounced in deficient populations. The score reflects exceptional evidence for bone health and solid, if context-dependent, evidence for immune support.",
+    methodology: "Score reflects quality of evidence (RCT weighting), dosage specificity, effect size, replication, and consistency of outcomes across independent research groups."
+  },
+  {
+    id: 2,
+    name: "Melatonin 5mg",
+    brand: "RestLab",
+    category: "Hormone · Tablet · 90 servings",
+    score: 88,
+    grade: "A-",
+    claims: ["Promotes healthy sleep onset", "Reduces jet lag"],
+    meaning: "Robust evidence for reducing sleep latency. Particularly well-studied for circadian rhythm disruption and jet lag.",
+    ingredients: ["Melatonin 5mg", "Microcrystalline Cellulose", "Dicalcium Phosphate", "Stearic Acid", "Silicon Dioxide"],
+    claimDetails: [
+      {
+        text: "Promotes healthy sleep onset",
+        score: 88,
+        chip: "chip-green",
+        chipLabel: "Strong Evidence",
+        supporting: [
+          { ref: "Brzezinski A. et al. (2005)", journal: "Sleep Medicine Reviews", note: "Meta-analysis of 17 studies: melatonin significantly reduced sleep onset latency (mean 7.2 min decrease) and improved sleep efficiency." },
+          { ref: "Ferracioli-Oda E. et al. (2013)", journal: "PLOS ONE", note: "Meta-analysis of 19 studies confirming significant reductions in sleep latency, particularly in primary sleep disorders." }
+        ],
+        against: [
+          { ref: "Buscemi N. et al. (2006)", journal: "Journal of General Internal Medicine", note: "Systematic review noted effect sizes are modest and short-term. Caution advised for long-term use and in children." }
+        ]
+      },
+      {
+        text: "Reduces jet lag",
+        score: 93,
+        chip: "chip-green",
+        chipLabel: "Strong Evidence",
+        supporting: [
+          { ref: "Herxheimer A. & Petrie K.J. (2002)", journal: "Cochrane Database", note: "Cochrane review of 10 trials: melatonin is remarkably effective for preventing or reducing jet lag, especially on eastward flights." },
+          { ref: "Arendt J. et al. (1997)", journal: "Chronobiology International", note: "Pioneering study confirming melatonin's ability to shift circadian phase to match new time zones, reducing jet lag symptoms." }
+        ],
+        against: []
+      }
+    ],
+    justification: "Melatonin is among the most evidence-backed sleep supplements. The jet lag claim is supported by a Cochrane review — the gold standard of evidence synthesis. The sleep onset claim is also strongly supported, though effect sizes are modest in otherwise healthy sleepers. The grade reflects strong evidence with a small caveat around dose optimization — 5mg is higher than the 0.5–2mg shown effective in most trials, and higher doses do not proportionally increase efficacy.",
+    methodology: "Score reflects quality of evidence (RCT weighting), dosage specificity, effect size, replication, and consistency of outcomes across independent research groups."
+  },
+  {
+    id: 3,
+    name: "Omega-3 Fish Oil 1000mg",
+    brand: "DeepSea Labs",
+    category: "Fatty Acid · Softgel · 90 servings",
+    score: 79,
+    grade: "B+",
+    claims: ["Promotes cardiovascular health", "Supports healthy triglyceride levels"],
+    meaning: "Strong evidence for triglyceride reduction. More modest support for broader cardiovascular outcomes.",
+    ingredients: ["Fish Oil Concentrate 1000mg (EPA 180mg, DHA 120mg)", "Gelatin", "Glycerin", "Purified Water", "Natural Lemon Flavor", "Vitamin E (as mixed tocopherols)"],
+    claimDetails: [
+      {
+        text: "Supports healthy triglyceride levels",
+        score: 91,
+        chip: "chip-green",
+        chipLabel: "Strong Evidence",
+        supporting: [
+          { ref: "Jacobson T.A. et al. (2012)", journal: "American Journal of Cardiology", note: "Comprehensive review confirming omega-3 fatty acids reduce fasting triglycerides by 20–30% at 2–4g EPA+DHA/day." },
+          { ref: "Harris W.S. (1997)", journal: "American Journal of Clinical Nutrition", note: "Dose-response analysis confirming consistent TG lowering with omega-3 supplementation, endorsed by AHA." }
+        ],
+        against: [
+          { ref: "Rizos E.C. et al. (2012)", journal: "JAMA", note: "Meta-analysis found no significant reduction in major cardiovascular events despite TG lowering — questions clinical translation." }
+        ]
+      },
+      {
+        text: "Promotes cardiovascular health",
+        score: 64,
+        chip: "chip-orange",
+        chipLabel: "Mixed Evidence",
+        supporting: [
+          { ref: "REDUCE-IT Trial (2018)", journal: "NEJM", note: "High-dose icosapentaenoic acid (4g/day) reduced cardiovascular events by 25% in high-risk patients — but used pharmaceutical-grade EPA only." },
+          { ref: "Mozaffarian D. & Wu J.H. (2011)", journal: "JACC", note: "Review supporting omega-3s for anti-arrhythmic, anti-inflammatory, and anti-atherosclerotic effects." }
+        ],
+        against: [
+          { ref: "ASCEND Trial (2018)", journal: "NEJM", note: "Over-the-counter dose (840mg EPA+DHA/day) showed no significant reduction in serious vascular events in diabetic adults." },
+          { ref: "ORIGIN Trial (2012)", journal: "NEJM", note: "1g/day omega-3 supplementation did not reduce cardiovascular outcomes vs placebo in high-risk individuals." }
+        ]
+      }
+    ],
+    justification: "The triglyceride-lowering effect of omega-3s is one of the most robust findings in nutrition science. The cardiovascular health claim is more nuanced: major positive outcomes in high-dose, high-risk trials (notably REDUCE-IT) did not replicate at standard OTC doses in general populations. This product's 180mg EPA + 120mg DHA per softgel is well below the 2–4g/day therapeutic range. The B+ reflects strong evidence for one claim and mixed evidence for the broader cardiovascular claim at this specific dose.",
+    methodology: "Score reflects quality of evidence (RCT weighting), dosage specificity, effect size, replication, and consistency of outcomes across independent research groups."
+  },
+  {
+    id: 4,
+    name: "Magnesium Glycinate 400mg",
+    brand: "MineraCo",
+    category: "Mineral · Capsule · 120 servings",
+    score: 72,
+    grade: "B",
+    claims: ["Supports muscle recovery", "Promotes restful sleep"],
+    meaning: "Well-established for deficiency correction. Moderate and growing evidence for sleep quality benefits.",
+    ingredients: ["Magnesium Glycinate 400mg (Elemental Magnesium 58mg)", "Hydroxypropyl Methylcellulose", "Microcrystalline Cellulose", "Magnesium Stearate"],
+    claimDetails: [
+      {
+        text: "Supports muscle recovery",
+        score: 68,
+        chip: "chip-orange",
+        chipLabel: "Moderate Evidence",
+        supporting: [
+          { ref: "Chen H.Y. et al. (2022)", journal: "Nutrients", note: "RCT in athletes: magnesium supplementation reduced post-exercise muscle soreness markers (CK, LDH) vs placebo." },
+          { ref: "Golf S.W. et al. (1998)", journal: "Cardiovascular Drugs and Therapy", note: "Magnesium's role in ATP production and muscle contraction is biochemically established and universally accepted." }
+        ],
+        against: [
+          { ref: "Tauler P. et al. (2008)", journal: "European Journal of Applied Physiology", note: "No significant improvement in muscle recovery markers in well-nourished athletes with adequate baseline magnesium." }
+        ]
+      },
+      {
+        text: "Promotes restful sleep",
+        score: 74,
+        chip: "chip-orange",
+        chipLabel: "Moderate Evidence",
+        supporting: [
+          { ref: "Abbasi B. et al. (2012)", journal: "Journal of Research in Medical Sciences", note: "Double-blind RCT in elderly insomniacs: 500mg magnesium improved sleep efficiency, sleep onset, and sleep duration vs placebo." },
+          { ref: "Zhang Y. et al. (2022)", journal: "Sleep Medicine Reviews", note: "Systematic review of 7 studies found magnesium improved subjective sleep quality, particularly in deficient and older adults." }
+        ],
+        against: [
+          { ref: "Arab A. et al. (2023)", journal: "Pharmacological Research", note: "Systematic review concluded evidence is preliminary — most positive studies are in deficient populations, limiting generalizability." }
+        ]
+      }
+    ],
+    justification: "Magnesium's role in muscle and sleep physiology is mechanistically sound. Both claims show genuine supporting evidence, but effects are most pronounced in magnesium-deficient populations, which limits broad applicability. The glycinate chelate form has superior bioavailability vs oxide forms, which is a genuine positive. The B grade reflects real but context-dependent evidence — these are meaningful claims, not marketing fiction, but they're not universally applicable at this dose.",
+    methodology: "Score reflects quality of evidence (RCT weighting), dosage specificity, effect size, replication, and consistency of outcomes across independent research groups."
+  },
+  {
+    id: 5,
+    name: "Ashwagandha KSM-66 600mg",
+    brand: "Adaptogen Labs",
+    category: "Herbal Extract · Capsule · 60 servings",
+    score: 67,
+    grade: "B-",
+    claims: ["Reduces stress and anxiety", "Supports healthy cortisol levels"],
+    meaning: "Emerging and promising evidence, but trials are mostly small and short. Needs larger independent replication.",
+    ingredients: ["KSM-66 Ashwagandha Root Extract 600mg (5% withanolides)", "Hydroxypropyl Methylcellulose", "Rice Flour", "Magnesium Stearate"],
+    claimDetails: [
+      {
+        text: "Reduces stress and anxiety",
+        score: 72,
+        chip: "chip-orange",
+        chipLabel: "Moderate Evidence",
+        supporting: [
+          { ref: "Chandrasekhar K. et al. (2012)", journal: "Indian Journal of Psychological Medicine", note: "Double-blind RCT (n=64): KSM-66 ashwagandha significantly reduced perceived stress (PSS scale) and serum cortisol vs placebo over 60 days." },
+          { ref: "Pratte M.A. et al. (2014)", journal: "Journal of Alternative Medicine", note: "RCT confirming significant improvement in stress and anxiety scores with 300mg root extract twice daily." }
+        ],
+        against: [
+          { ref: "Tandon N. & Yadav S.S. (2020)", journal: "Journal of Ethnopharmacology", note: "Comprehensive safety review notes most trials are industry-funded and small (<100 participants), calling for independent large-scale RCTs." }
+        ]
+      },
+      {
+        text: "Supports healthy cortisol levels",
+        score: 61,
+        chip: "chip-orange",
+        chipLabel: "Moderate Evidence",
+        supporting: [
+          { ref: "Auddy B. et al. (2008)", journal: "Journal of the American Nutraceutical Association", note: "Dose-dependent reduction in serum cortisol (14.5–27.9%) observed across proprietary ashwagandha extract groups." }
+        ],
+        against: [
+          { ref: "Smith S.J. et al. (2021)", journal: "Evidence-Based Complementary Medicine", note: "Systematic review found inconsistent cortisol outcomes — effects appear strongest in chronically stressed individuals and absent in non-stressed adults." }
+        ]
+      }
+    ],
+    justification: "Ashwagandha is a legitimately interesting botanical with real supporting data, unlike many herbal supplements that lack any credible trial evidence. However, most positive trials are small, short (≤60 days), and funded by ingredient suppliers — a meaningful limitation. The KSM-66 extract has the broadest evidence base of any ashwagandha standardization. The B- grade reflects genuine promise tempered by the need for larger, independently-funded replication.",
+    methodology: "Score reflects quality of evidence (RCT weighting), dosage specificity, effect size, replication, and consistency of outcomes across independent research groups."
+  },
+  {
+    id: 6,
+    name: "Collagen Peptides 10g",
+    brand: "GlowForm",
+    category: "Protein · Powder · 30 servings",
+    score: 61,
+    grade: "B-",
+    claims: ["Improves skin elasticity", "Reduces appearance of wrinkles"],
+    meaning: "Moderate evidence from small trials showing meaningful results. Bioavailability mechanism now better understood, but long-term data is limited.",
+    ingredients: ["Hydrolyzed Bovine Collagen Peptides 10g (Type I & III)", "Vitamin C 80mg", "Hyaluronic Acid 40mg"],
+    claimDetails: [
+      {
+        text: "Improves skin elasticity",
+        score: 65,
+        chip: "chip-orange",
+        chipLabel: "Moderate Evidence",
+        supporting: [
+          { ref: "Proksch E. et al. (2014)", journal: "Skin Pharmacology and Physiology", note: "Double-blind RCT (n=69): women taking 2.5g collagen peptides daily showed significant improvement in skin elasticity after 4 weeks vs placebo." },
+          { ref: "Asserin J. et al. (2015)", journal: "Journal of Cosmetic Dermatology", note: "Oral collagen hydrolysate supplementation improved skin hydration and elasticity with statistically significant results at 12 weeks." }
+        ],
+        against: [
+          { ref: "Choi F.D. et al. (2019)", journal: "Journal of Drugs in Dermatology", note: "Systematic review noted high risk of bias in most trials — small sample sizes, short durations, and manufacturer funding are common limitations." }
+        ]
+      },
+      {
+        text: "Reduces appearance of wrinkles",
+        score: 57,
+        chip: "chip-orange",
+        chipLabel: "Mixed Evidence",
+        supporting: [
+          { ref: "Schunck M. et al. (2015)", journal: "Skin Pharmacology and Physiology", note: "RCT: 2.5g specific collagen peptides reduced eye wrinkle volume by 20% compared to placebo after 8 weeks." }
+        ],
+        against: [
+          { ref: "Bolke L. et al. (2019)", journal: "Nutrients", note: "Cautionary note: collagen peptides are digested into amino acids before absorption — the mechanism by which they signal skin fibroblasts remains debated." },
+          { ref: "Rawlings A.V. (2018)", journal: "International Journal of Cosmetic Science", note: "Review argues bioavailability and specificity of effect remain poorly characterized; direct causal link between oral intake and skin collagen density not conclusively established." }
+        ]
+      }
+    ],
+    justification: "Collagen peptides occupy an interesting evidence space — there are genuine positive RCT results, but most are small, short-term, and industry-funded. The mechanism (oral hydrolyzed peptides stimulating dermal fibroblasts via circulating hydroxyproline) is plausible and increasingly supported by in vitro data, but not definitively proven. This product includes Vitamin C — a cofactor for collagen synthesis — which is a meaningful formulation choice. The B- reflects real but preliminary evidence, not absence of evidence.",
+    methodology: "Score reflects quality of evidence (RCT weighting), dosage specificity, effect size, replication, and consistency of outcomes across independent research groups."
+  },
+  {
+    id: 7,
+    name: "Biotin 10,000mcg",
+    brand: "HairVita",
+    category: "Vitamin · Capsule · 60 servings",
+    score: 38,
+    grade: "C",
+    claims: ["Promotes hair growth", "Supports stronger nails"],
+    meaning: "Very limited evidence. Benefits are established only in deficient individuals. Deficiency is rare in healthy adults.",
+    ingredients: ["Biotin (as D-Biotin) 10,000mcg", "Calcium Carbonate 45mg", "Microcrystalline Cellulose", "Vegetable Stearate"],
+    claimDetails: [
+      {
+        text: "Promotes hair growth",
+        score: 33,
+        chip: "chip-red",
+        chipLabel: "Weak Evidence",
+        supporting: [
+          { ref: "Trüeb R.M. (2016)", journal: "Skin Appendage Disorders", note: "Case series and review documenting hair regrowth in patients with documented biotin deficiency following supplementation." }
+        ],
+        against: [
+          { ref: "Patel D.P. et al. (2017)", journal: "Skin Appendage Disorders", note: "Systematic review found only 18 published cases of biotin supplementation for hair and nail complaints — all involved either inherited disorders or conditions depleting biotin. No evidence in healthy adults." },
+          { ref: "Colombo V.E. et al. (1990)", journal: "Journal of the American Academy of Dermatology", note: "Early study cited by industry — but used brittle nails (not hair) as the outcome, and sample size was 45 with no adequate control group." }
+        ]
+      },
+      {
+        text: "Supports stronger nails",
+        score: 42,
+        chip: "chip-red",
+        chipLabel: "Weak Evidence",
+        supporting: [
+          { ref: "Hochman L.G. et al. (1993)", journal: "Cutis", note: "Small uncontrolled study (n=45) reported nail plate thickness increased with 2.5mg biotin over 6 months in patients with brittle nails." }
+        ],
+        against: [
+          { ref: "Soleymani T. et al. (2017)", journal: "JAMA Dermatology", note: "Definitive review: 'there is a lack of rigorous evidence' for biotin in healthy individuals. Highlights the gap between common marketing claims and actual trial data." },
+          { ref: "Zempleni J. et al. (2008)", journal: "Nutrition Reviews", note: "Biotin deficiency is exceedingly rare in healthy adults consuming a varied diet. Supraphysiologic doses (10,000mcg is ~333x the RDA) provide no additional benefit over adequate status." }
+        ]
+      }
+    ],
+    justification: "Biotin is one of the most commercially successful supplement ingredients relative to its evidence base. The evidence for hair and nail benefits in healthy adults is genuinely weak — the positive findings come almost exclusively from individuals with documented deficiency or metabolic disorders. The 10,000mcg dose in this product is 333 times the recommended daily intake. This isn't harmful, but supraphysiologic dosing provides no additional benefit and can cause false results in thyroid and troponin lab tests. The C grade reflects the significant gap between the marketing claims and the scientific literature.",
+    methodology: "Score reflects quality of evidence (RCT weighting), dosage specificity, effect size, replication, and consistency of outcomes across independent research groups."
+  },
+  {
+    id: 8,
+    name: "Turmeric Curcumin 500mg",
+    brand: "GoldenRoot",
+    category: "Herbal Extract · Capsule · 90 servings",
+    score: 48,
+    grade: "C+",
+    claims: ["Reduces inflammation", "Supports joint comfort"],
+    meaning: "Mechanistically plausible and supported by in vitro data, but poor bioavailability limits real-world efficacy at standard doses.",
+    ingredients: ["Turmeric Root Extract 500mg (95% curcuminoids)", "Black Pepper Extract (BioPerine) 5mg", "Hydroxypropyl Methylcellulose", "Rice Powder"],
+    claimDetails: [
+      {
+        text: "Reduces inflammation",
+        score: 44,
+        chip: "chip-red",
+        chipLabel: "Weak Clinical Evidence",
+        supporting: [
+          { ref: "Hewlings S.J. & Kalman D.S. (2017)", journal: "Foods", note: "Review confirming curcumin inhibits NF-kB, COX-2, and multiple pro-inflammatory cytokines in cell and animal studies." },
+          { ref: "Daily J.W. et al. (2016)", journal: "Journal of Medicinal Food", note: "Meta-analysis of 8 RCTs found curcumin reduced serum CRP and IL-6, but effect sizes were modest and heterogeneity was high." }
+        ],
+        against: [
+          { ref: "Nelson K.M. et al. (2017)", journal: "Journal of Medicinal Chemistry", note: "Critical analysis identifying curcumin as a 'PAIN' compound (pan-assay interference compound) — its apparent activity in many assays is an artifact of its chemical properties, not true biological efficacy." },
+          { ref: "Vareed S.K. et al. (2008)", journal: "Cancer Epidemiology Biomarkers", note: "Pharmacokinetic study showing peak plasma curcumin of <1 µM after 10g oral dose — far below concentrations needed for anti-inflammatory effects observed in vitro." }
+        ]
+      },
+      {
+        text: "Supports joint comfort",
+        score: 53,
+        chip: "chip-orange",
+        chipLabel: "Mixed Evidence",
+        supporting: [
+          { ref: "Kuptniratsaikul V. et al. (2014)", journal: "Clinical Interventions in Aging", note: "RCT (n=367): turmeric extract as effective as ibuprofen for knee osteoarthritis pain at 4 weeks, with fewer GI adverse events." },
+          { ref: "Belcaro G. et al. (2010)", journal: "Alternative Therapies in Health and Medicine", note: "Long-term (8 months) RCT in OA patients: Meriva (phospholipid-curcumin complex) significantly improved WOMAC pain scores vs standard care." }
+        ],
+        against: [
+          { ref: "Lauche R. et al. (2021)", journal: "Osteoarthritis and Cartilage", note: "Systematic review of 10 trials: clinically meaningful pain reduction observed in only 4 of 10 studies; publication bias suspected." }
+        ]
+      }
+    ],
+    justification: "Turmeric/curcumin presents a paradox: extraordinary in vitro evidence and a biologically plausible mechanism, but chronically poor performance in clinical trials. The key problem is bioavailability — standard curcumin is barely absorbed. This product includes BioPerine (piperine), which improves absorption by ~2000%, but even with this enhancement, plasma levels remain well below therapeutic concentrations established in cell studies. The positive joint pain RCTs are the strongest evidence available and are not negligible. The C+ reflects real but bioavailability-constrained evidence — meaningful in theory, limited in practice at this dose.",
+    methodology: "Score reflects quality of evidence (RCT weighting), dosage specificity, effect size, replication, and consistency of outcomes across independent research groups."
+  },
+  {
+    id: 9,
+    name: "Probiotic Blend 50B CFU",
+    brand: "FloraBalance",
+    category: "Probiotic · Capsule · 30 servings",
+    score: 55,
+    grade: "B-",
+    claims: ["Supports digestive health", "Promotes immune system function"],
+    meaning: "Evidence is highly strain-specific. General claims are often overstated. Some specific strains have robust supporting data.",
+    ingredients: ["Lactobacillus acidophilus 15B CFU", "Bifidobacterium longum 10B CFU", "Lactobacillus rhamnosus GG 10B CFU", "Lactobacillus plantarum 10B CFU", "Lactobacillus paracasei 5B CFU", "Vegetable Cellulose Capsule", "Potato Starch"],
+    claimDetails: [
+      {
+        text: "Supports digestive health",
+        score: 62,
+        chip: "chip-orange",
+        chipLabel: "Strain-Dependent Evidence",
+        supporting: [
+          { ref: "Goldenberg J.Z. et al. (2017)", journal: "Cochrane Database", note: "Cochrane review of 39 RCTs: probiotics reduce antibiotic-associated diarrhea by ~50%. LGG and S. boulardii have the strongest individual strain evidence." },
+          { ref: "Moayyedi P. et al. (2010)", journal: "Gut", note: "Meta-analysis of 18 RCTs: probiotics show modest benefit for IBS symptoms, with significant heterogeneity across strains and outcomes." }
+        ],
+        against: [
+          { ref: "Zmora N. et al. (2018)", journal: "Cell", note: "Landmark study showing that standard probiotic colonization fails in many individuals — the gut microbiome resists exogenous strains in a highly personalized manner." }
+        ]
+      },
+      {
+        text: "Promotes immune system function",
+        score: 47,
+        chip: "chip-red",
+        chipLabel: "Weak Broad-Claim Evidence",
+        supporting: [
+          { ref: "Rizzardini G. et al. (2012)", journal: "British Journal of Nutrition", note: "RCT: specific Bifidobacterium strains improved NK cell activity vs placebo in healthy adults during influenza season." }
+        ],
+        against: [
+          { ref: "Hao Q. et al. (2015)", journal: "Cochrane Database", note: "Cochrane review found probiotics slightly reduced incidence of acute respiratory infections but effect was small and evidence quality was low-to-moderate." },
+          { ref: "EFSA Panel (2012)", journal: "European Food Safety Authority", note: "EFSA rejected all submitted probiotic health claims related to immune function due to insufficient evidence linking consumption to specific immune outcomes." }
+        ]
+      }
+    ],
+    justification: "Probiotics are a category where the gap between clinical evidence and marketing claims is particularly wide. The digestive health evidence is real but narrowly applicable — specific strains (particularly LGG) have excellent data for antibiotic-associated diarrhea, but this doesn't generalize to vague 'digestive health' claims. The immune claim is weakly supported at the broad-claim level. This product's inclusion of LGG is a genuine evidence-based choice; the remaining strains have varying levels of support. The B- reflects meaningful but overstated claims with legitimate evidence for specific outcomes in specific populations.",
+    methodology: "Score reflects quality of evidence (RCT weighting), dosage specificity, effect size, replication, and consistency of outcomes across independent research groups."
+  },
+  {
+    id: 10,
+    name: "Green Tea Extract 500mg",
+    brand: "MetaFuel",
+    category: "Herbal Extract · Capsule · 60 servings",
+    score: 29,
+    grade: "C-",
+    claims: ["Boosts metabolism", "Aids weight loss"],
+    meaning: "Effect sizes are clinically trivial at standard doses. Meaningful weight impact has not been demonstrated in well-controlled trials.",
+    ingredients: ["Green Tea Extract 500mg (50% EGCG / 250mg)", "Caffeine Anhydrous 100mg", "Hydroxypropyl Methylcellulose", "Silica", "Magnesium Stearate"],
+    claimDetails: [
+      {
+        text: "Boosts metabolism",
+        score: 36,
+        chip: "chip-red",
+        chipLabel: "Trivial Effect Size",
+        supporting: [
+          { ref: "Dulloo A.G. et al. (1999)", journal: "American Journal of Clinical Nutrition", note: "RCT: green tea extract increased 24-hour energy expenditure by 4% vs placebo — a real effect, but equivalent to ~80 additional calories per day." }
+        ],
+        against: [
+          { ref: "Phung O.J. et al. (2010)", journal: "Journal of the American Dietetic Association", note: "Systematic review of 11 studies: green tea catechins increase metabolic rate by a statistically significant but clinically negligible 3–4%." },
+          { ref: "Westerterp-Plantenga M.S. (2010)", journal: "Physiology & Behavior", note: "Review concludes thermogenic effect is modest, transient, and largely attributable to caffeine co-administration — not EGCG independently." }
+        ]
+      },
+      {
+        text: "Aids weight loss",
+        score: 22,
+        chip: "chip-red",
+        chipLabel: "No Clinically Meaningful Effect",
+        supporting: [
+          { ref: "Hursel R. et al. (2009)", journal: "Obesity Reviews", note: "Meta-analysis: green tea catechins produced mean weight loss of 1.31kg over 12 weeks vs placebo — statistically significant, clinically negligible." }
+        ],
+        against: [
+          { ref: "Jurgens T. et al. (2012)", journal: "Cochrane Database", note: "Cochrane review: weight loss from green tea extracts is small and unlikely to be clinically relevant. Not maintained long-term." },
+          { ref: "US Preventive Services Task Force (2018)", journal: "JAMA", note: "Does not recommend green tea supplements for weight loss due to insufficient evidence of meaningful benefit and potential hepatotoxicity risk at high doses." }
+        ]
+      }
+    ],
+    justification: "Green tea extract is one of the most studied weight-loss supplements — and one of the most consistently disappointing in clinical trials. The metabolic effect is real but trivial: ~80 extra calories per day of energy expenditure, which translates to roughly 0.1kg per month. The weight loss trials show statistically significant effects that are clinically meaningless (~1.3kg over 3 months). This product also contains 100mg caffeine, which itself has a thermogenic effect — making it impossible to attribute outcomes specifically to green tea extract. This is a legal and not dangerous supplement, but the claims as marketed significantly overstate the real-world effect size.",
+    methodology: "Score reflects quality of evidence (RCT weighting), dosage specificity, effect size, replication, and consistency of outcomes across independent research groups."
+  }
+];
+
+// ─── Grade helpers ──────────────────────────────────────────────────
+function gradeClass(grade) {
+  if (grade.startsWith('A')) return 'grade-a';
+  if (grade.startsWith('B')) return 'grade-b';
+  return 'grade-c';
+}
+function scoreColorClass(score) {
+  if (score >= 70) return 'fill-green';
+  if (score >= 50) return 'fill-orange';
+  return 'fill-red';
+}
+function chipClass(score) {
+  if (score >= 70) return 'chip-green';
+  if (score >= 50) return 'chip-orange';
+  return 'chip-red';
+}
+
+// ─── Render table ───────────────────────────────────────────────────
+function renderTable(data) {
+  const tbody = document.getElementById('dbBody');
+  tbody.innerHTML = '';
+  data.forEach(p => {
+    const tr = document.createElement('tr');
+    tr.dataset.id = p.id;
+    tr.innerHTML = `
+      <td>
+        <div class="td-product-name">${p.name}</div>
+        <div class="td-product-brand">${p.brand}</div>
+      </td>
+      <td class="td-claims">${p.claims.join('<br>')}</td>
+      <td>
+        <div class="score-wrap">
+          <span class="score-num">${p.score}</span>
+          <div class="score-bar-track">
+            <div class="score-bar-fill ${scoreColorClass(p.score)}" style="width:${p.score}%"></div>
+          </div>
+        </div>
+      </td>
+      <td><div class="grade-badge ${gradeClass(p.grade)}">${p.grade}</div></td>
+      <td class="td-meaning">${p.meaning}</td>
+      <td class="td-arrow">&#8594;</td>
+    `;
+    tr.addEventListener('click', () => openModal(p));
+    tbody.appendChild(tr);
+  });
+  document.getElementById('resultCount').textContent = `${data.length} product${data.length !== 1 ? 's' : ''}`;
+  document.getElementById('noResults').style.display = data.length === 0 ? 'block' : 'none';
+}
+
+// ─── Modal ──────────────────────────────────────────────────────────
+function openModal(p) {
+  document.getElementById('mName').textContent = p.name;
+  document.getElementById('mMeta').textContent = p.brand + ' · ' + p.category;
+  document.getElementById('mScore').textContent = p.score;
+  const fillEl = document.getElementById('mScoreFill');
+  fillEl.style.width = p.score + '%';
+  fillEl.className = 'modal-score-fill ' + scoreColorClass(p.score);
+  const gradeEl = document.getElementById('mGradeBig');
+  gradeEl.textContent = p.grade;
+  gradeEl.className = 'modal-grade-big ' + gradeClass(p.grade);
+
+  // Body
+  let html = '';
+
+  // Ingredients
+  html += `<div class="modal-section">
+    <div class="modal-section-title">Ingredients</div>
+    <div class="ingredient-list">
+      ${p.ingredients.map(i => `<span class="ingredient-pill">${i}</span>`).join('')}
+    </div>
+  </div>`;
+
+  // Claims breakdown
+  html += `<div class="modal-section"><div class="modal-section-title">Claim-by-Claim Breakdown</div>`;
+  p.claimDetails.forEach(c => {
+    const cc = chipClass(c.score);
+    html += `<div class="claim-block">
+      <div class="claim-block-header">
+        <div class="claim-block-text">"${c.text}"</div>
+        <span class="claim-block-score-chip ${cc}">${c.score}/100 &mdash; ${c.chipLabel}</span>
+      </div>`;
+    if (c.supporting.length) {
+      html += `<div class="studies-label support">Supporting Studies</div>`;
+      c.supporting.forEach(s => {
+        html += `<div class="study-item support">${s.note}<span class="study-meta">${s.ref} &mdash; ${s.journal}</span></div>`;
+      });
+    }
+    if (c.against.length) {
+      html += `<div class="studies-label against">Contradicting / Limiting Studies</div>`;
+      c.against.forEach(s => {
+        html += `<div class="study-item against">${s.note}<span class="study-meta">${s.ref} &mdash; ${s.journal}</span></div>`;
+      });
+    }
+    html += `</div>`;
+  });
+  html += `</div>`;
+
+  // Justification
+  html += `<div class="modal-section">
+    <div class="modal-section-title">Score Justification</div>
+    <div class="justification-box">${p.justification}</div>
+  </div>`;
+
+  // Methodology
+  html += `<div class="modal-section">
+    <div class="modal-section-title">Methodology Note</div>
+    <div class="methodology-note">${p.methodology}</div>
+  </div>`;
+
+  document.getElementById('mBody').innerHTML = html;
+
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ─── Search & Filter ────────────────────────────────────────────────
+let activeFilter = 'all';
+
+function applyFilters() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = products.filter(p => {
+    const matchesSearch = !q ||
+      p.name.toLowerCase().includes(q) ||
+      p.brand.toLowerCase().includes(q) ||
+      p.claims.some(c => c.toLowerCase().includes(q));
+    const matchesFilter =
+      activeFilter === 'all' ||
+      (activeFilter === 'a' && p.grade.startsWith('A')) ||
+      (activeFilter === 'b' && p.grade.startsWith('B')) ||
+      (activeFilter === 'c' && p.grade.startsWith('C'));
+    return matchesSearch && matchesFilter;
+  });
+  renderTable(filtered);
+}
+
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+document.querySelectorAll('.db-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.db-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    applyFilters();
+  });
+});
+
+// ─── Nav burger ─────────────────────────────────────────────────────
+const burger = document.getElementById('burger');
+const drawer = document.getElementById('drawer');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  drawer.classList.toggle('open');
+});
+drawer.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    drawer.classList.remove('open');
+  });
+});
+
+// ─── Scroll animations ───────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ─── Init ────────────────────────────────────────────────────────────
+renderTable(products);
+</script>
+</body>
+</html>
