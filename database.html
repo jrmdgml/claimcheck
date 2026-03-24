@@ -444,6 +444,71 @@
       border-left: 3px solid var(--gray-200);
     }
 
+    /* ─── Pagination ────────────────────────────────────────────── */
+    .db-pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--gray-100);
+      background: var(--gray-50);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .pagination-info { font-size: 0.8125rem; color: var(--gray-400); }
+    .pagination-btns { display: flex; gap: 0.375rem; align-items: center; }
+    .pg-btn {
+      min-width: 36px;
+      height: 36px;
+      padding: 0 0.625rem;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      background: white;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--navy);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .pg-btn:hover:not(:disabled):not(.active) {
+      border-color: var(--navy);
+      background: var(--gray-50);
+    }
+    .pg-btn.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: white;
+    }
+    .pg-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    /* ─── Not-found CTA banner ───────────────────────────────────── */
+    .db-cta-banner {
+      max-width: 1100px;
+      margin: 1.75rem auto 0;
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-card);
+    }
+    .db-cta-banner-text h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.25rem;
+    }
+    .db-cta-banner-text p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
     /* ─── Responsive ────────────────────────────────────────────── */
     @media (max-width: 900px) {
       .td-meaning, .td-claims { display: none; }
@@ -550,6 +615,18 @@
       </tbody>
     </table>
     <div class="no-results" id="noResults">No products match your search.</div>
+    <div class="db-pagination" id="dbPagination">
+      <span class="pagination-info" id="paginationInfo"></span>
+      <div class="pagination-btns" id="paginationBtns"></div>
+    </div>
+  </div>
+
+  <div class="db-cta-banner">
+    <div class="db-cta-banner-text">
+      <h3>Can&rsquo;t find the supplement you&rsquo;re looking for?</h3>
+      <p>Submit your product details and we&rsquo;ll prepare a customized evidence report for you.</p>
+    </div>
+    <a href="custom-report.html" class="btn btn-green" style="white-space:nowrap;">Request a Custom Report &rarr;</a>
   </div>
 </section>
 
@@ -1026,11 +1103,21 @@ function chipClass(score) {
   return 'chip-red';
 }
 
-// ─── Render table ───────────────────────────────────────────────────
-function renderTable(data) {
+// ─── Pagination state ───────────────────────────────────────────────
+const PAGE_SIZE = 5;
+let currentPage = 1;
+let filteredData = [];
+
+function renderPage() {
+  const total = filteredData.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageData = filteredData.slice(start, start + PAGE_SIZE);
+
   const tbody = document.getElementById('dbBody');
   tbody.innerHTML = '';
-  data.forEach(p => {
+  pageData.forEach(p => {
     const tr = document.createElement('tr');
     tr.dataset.id = p.id;
     tr.innerHTML = `
@@ -1054,8 +1141,42 @@ function renderTable(data) {
     tr.addEventListener('click', () => openModal(p));
     tbody.appendChild(tr);
   });
-  document.getElementById('resultCount').textContent = `${data.length} product${data.length !== 1 ? 's' : ''}`;
-  document.getElementById('noResults').style.display = data.length === 0 ? 'block' : 'none';
+
+  document.getElementById('resultCount').textContent = `${total} product${total !== 1 ? 's' : ''}`;
+  document.getElementById('noResults').style.display = total === 0 ? 'block' : 'none';
+
+  const pagination = document.getElementById('dbPagination');
+  pagination.style.display = total === 0 ? 'none' : 'flex';
+
+  const from = total === 0 ? 0 : start + 1;
+  const to = Math.min(start + PAGE_SIZE, total);
+  document.getElementById('paginationInfo').textContent =
+    total > 0 ? `Showing ${from}–${to} of ${total}` : '';
+
+  const btns = document.getElementById('paginationBtns');
+  btns.innerHTML = '';
+
+  const prev = document.createElement('button');
+  prev.className = 'pg-btn';
+  prev.textContent = '← Prev';
+  prev.disabled = currentPage === 1;
+  prev.addEventListener('click', () => { currentPage--; renderPage(); });
+  btns.appendChild(prev);
+
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'pg-btn' + (i === currentPage ? ' active' : '');
+    btn.textContent = i;
+    btn.addEventListener('click', () => { currentPage = i; renderPage(); });
+    btns.appendChild(btn);
+  }
+
+  const next = document.createElement('button');
+  next.className = 'pg-btn';
+  next.textContent = 'Next →';
+  next.disabled = currentPage === totalPages;
+  next.addEventListener('click', () => { currentPage++; renderPage(); });
+  btns.appendChild(next);
 }
 
 // ─── Modal ──────────────────────────────────────────────────────────
@@ -1141,7 +1262,7 @@ let activeFilter = 'all';
 
 function applyFilters() {
   const q = document.getElementById('searchInput').value.toLowerCase();
-  const filtered = products.filter(p => {
+  filteredData = products.filter(p => {
     const matchesSearch = !q ||
       p.name.toLowerCase().includes(q) ||
       p.brand.toLowerCase().includes(q) ||
@@ -1153,7 +1274,8 @@ function applyFilters() {
       (activeFilter === 'c' && p.grade.startsWith('C'));
     return matchesSearch && matchesFilter;
   });
-  renderTable(filtered);
+  currentPage = 1;
+  renderPage();
 }
 
 document.getElementById('searchInput').addEventListener('input', applyFilters);
@@ -1193,7 +1315,8 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
 // ─── Init ────────────────────────────────────────────────────────────
-renderTable(products);
+filteredData = [...products];
+renderPage();
 </script>
 </body>
 </html>
