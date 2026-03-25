@@ -12,7 +12,7 @@
 <!-- ─── Navigation ─────────────────────────────────────────────── -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><img src="image/logoCC1.png" alt="ClaimCheck" style="height:38px;display:block;" /></a>
+    <a href="index.html" class="nav-logo"><img src="image/logoCC4.png" alt="ClaimCheck" style="height:38px;display:block;" /></a>
     <ul class="nav-links">
       <li><a href="the-problem.html">The Problem</a></li>
       <li><a href="for-businesses.html">For Businesses</a></li>
@@ -48,15 +48,15 @@
     <!-- Dedicated claims showcase — 5 positions, max 2–3 visible at once -->
     <div style="position:relative;height:215px;margin-bottom:2rem;border-bottom:1px solid rgba(255,255,255,0.1);opacity:0;animation:heroFadeUp 0.7s ease 0.1s forwards;" aria-hidden="true">
       <!-- top-left -->
-      <p id="cs-0" style="position:absolute;left:0;top:0;font-size:1.25rem;font-weight:700;font-style:italic;color:rgba(255,255,255,0.85);max-width:380px;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
+      <p id="cs-0" style="position:absolute;left:0;top:0;font-style:italic;color:rgba(255,255,255,0.85);max-width:400px;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
       <!-- top-right -->
-      <p id="cs-1" style="position:absolute;right:0;top:4px;font-size:1rem;font-weight:600;font-style:italic;color:rgba(255,255,255,0.6);max-width:300px;text-align:right;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
+      <p id="cs-1" style="position:absolute;right:0;top:4px;font-style:italic;color:rgba(255,255,255,0.7);max-width:320px;text-align:right;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
       <!-- center -->
-      <p id="cs-2" style="position:absolute;left:12%;top:82px;font-size:1.5rem;font-weight:800;font-style:italic;color:rgba(255,255,255,0.92);max-width:500px;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
+      <p id="cs-2" style="position:absolute;left:12%;top:82px;font-style:italic;color:rgba(255,255,255,0.9);max-width:520px;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
       <!-- bottom-left -->
-      <p id="cs-3" style="position:absolute;left:0;bottom:12px;font-size:1.0625rem;font-weight:600;font-style:italic;color:rgba(255,255,255,0.65);max-width:360px;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
+      <p id="cs-3" style="position:absolute;left:0;bottom:12px;font-style:italic;color:rgba(255,255,255,0.65);max-width:380px;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
       <!-- bottom-right -->
-      <p id="cs-4" style="position:absolute;right:0;bottom:12px;font-size:0.9375rem;font-weight:500;font-style:italic;color:rgba(255,255,255,0.45);max-width:260px;text-align:right;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
+      <p id="cs-4" style="position:absolute;right:0;bottom:12px;font-style:italic;color:rgba(255,255,255,0.5);max-width:280px;text-align:right;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
     </div>
 
     <!-- Question -->
@@ -77,8 +77,8 @@
 
     <!-- Buttons -->
     <div class="btn-group" style="opacity:0;animation:heroFadeUp 0.8s ease 1.65s forwards;">
-      <a href="database.html" class="btn btn-green">Search the Database</a>
-      <a href="#how-it-works" class="btn btn-outline-white">How It Works</a>
+      <a href="#how-it-works" class="btn btn-green">Our Solution</a>
+      <a href="database.html" class="btn btn-outline-white">Search the Database</a>
     </div>
 
   </div>
@@ -91,7 +91,7 @@
       <p class="eyebrow">The Rating System</p>
       <h2>Three ratings. Plain language. No guesswork.</h2>
       <p class="mt-2">
-        Every claim in our database gets one of three ratings based on what the scientific evidence actually says. Here is what each one means for your shopping decision.
+        We have built a database that summarizes every health claim we have evaluated, so you can look up any supplement and see exactly what the science says. Every claim in our database gets one of three ratings based on what the peer-reviewed evidence actually supports. Here is what each one means for your shopping decision.
       </p>
     </div>
 
@@ -354,13 +354,24 @@
   let activeQueue = [];
   let claimCtr    = 0;
 
+  const csSizes = [
+    { fontSize: '0.9375rem', fontWeight: '500' },
+    { fontSize: '1.0625rem', fontWeight: '600' },
+    { fontSize: '1.25rem',   fontWeight: '700' },
+    { fontSize: '1.5rem',    fontWeight: '700' },
+    { fontSize: '1.75rem',   fontWeight: '800' },
+  ];
+
   function csTick() {
     const inactive = csSlots.filter(id => !activeQueue.includes(id));
     if (!inactive.length) return;
 
-    // Pick a random inactive slot, assign new claim, fade in
+    // Pick a random inactive slot, assign new claim + random size, fade in
     const nextId = inactive[Math.floor(Math.random() * inactive.length)];
     const el = document.getElementById(nextId);
+    const sz = csSizes[Math.floor(Math.random() * csSizes.length)];
+    el.style.fontSize   = sz.fontSize;
+    el.style.fontWeight = sz.fontWeight;
     el.textContent = shadyClaims[claimCtr % shadyClaims.length];
     claimCtr++;
     requestAnimationFrame(() => { el.style.opacity = '1'; });
