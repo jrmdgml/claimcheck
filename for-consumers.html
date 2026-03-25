@@ -145,9 +145,11 @@
       </div>
     </div>
 
-    <div class="fade-in" style="margin-top: 2.5rem; background: rgba(46,204,113,0.07); border: 1.5px solid rgba(46,204,113,0.25); border-radius: var(--radius); padding: 1.5rem 2rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
-      <img src="image/logoCC1.png" alt="ClaimCheck certified" style="height: 52px; flex-shrink: 0;" />
-      <div>
+    <div class="fade-in" style="margin-top: 2.5rem; background: rgba(46,204,113,0.07); border: 1.5px solid rgba(46,204,113,0.25); border-radius: var(--radius); overflow: hidden; display: grid; grid-template-columns: 20% 80%;">
+      <div style="background: rgba(46,204,113,0.1); display: flex; align-items: center; justify-content: center; padding: 1.5rem;">
+        <img src="image/logoCC1.png" alt="ClaimCheck certified" style="width: 100%; max-width: 110px; height: auto;" />
+      </div>
+      <div style="padding: 1.5rem 2rem;">
         <p style="font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.35rem;">Look for the ClaimCheck label on your supplement.</p>
         <p style="font-size: 0.9375rem; color: var(--text-muted); line-height: 1.65;">
           When you see our certification logo on a product, it means the health claims on that label have been independently reviewed against the peer-reviewed scientific literature&mdash;and held up. You can trust what the label says. The full evidence report behind every certified product is publicly available in our <a href="database.html" style="color: var(--green-dark); font-weight: 600;">database</a>.
@@ -162,7 +164,7 @@
   <div class="container">
     <div class="grid-2" style="align-items: center; gap: 4rem;">
       <div>
-        <p class="eyebrow fade-in">Using ClaimCheck</p>
+        <p class="eyebrow fade-in" style="font-size: 1.0625rem;">Using ClaimCheck</p>
         <h2 class="fade-in delay-1">Three steps to an informed decision</h2>
         <p class="mt-2 fade-in delay-2">
           Our database is free, public, and designed to be simple to use. You do not need a science degree to understand what you find.
@@ -187,7 +189,7 @@
             <div class="step-num">3</div>
             <div class="step-body">
               <h4>Make an informed decision</h4>
-              <p>Armed with what the science actually says, you can decide whether a supplement&rsquo;s claim is worth paying for&mdash;or whether the label makes promises the evidence cannot keep.</p>
+              <p>Armed with what the science actually says, you can decide whether a supplement&rsquo;s claim is worth paying for, or whether the label makes promises the evidence cannot keep.</p>
             </div>
           </div>
         </div>
@@ -236,6 +238,9 @@
             </div>
           </div>
         </div>
+        <div style="text-align: center; margin-top: 1.5rem;">
+          <a href="database.html" class="btn btn-green">Access our database</a>
+        </div>
       </div>
     </div>
   </div>
@@ -244,39 +249,37 @@
 <!-- ─── Section 4: Why It Matters ────────────────────────────── -->
 <section class="section bg-white" id="why-it-matters">
   <div class="container">
-    <div class="grid-2" style="align-items: center; gap: 4rem;">
-      <div class="fade-in">
-        <p class="eyebrow">The Context</p>
-        <h2>Why nobody checked until now</h2>
-      </div>
-      <div></div>
+    <div class="section-heading fade-in">
+      <p class="eyebrow">The problem</p>
+      <h2>Why nobody checked until now</h2>
     </div>
 
-    <div class="grid-2" style="margin-top: 2.5rem; gap: 2rem;">
-      <div class="fade-in delay-1">
+    <div style="margin-top: 3rem; display: flex; flex-direction: column; gap: 2rem;">
+
+      <!-- Left -->
+      <div class="fade-in delay-1" style="max-width: 62%; margin-right: auto;">
         <h3 style="margin-bottom: 0.75rem;">The rules allow it</h3>
-        <p>
-          A 1994 law called DSHEA&mdash;the Dietary Supplement Health and Education Act&mdash;allows supplement manufacturers to make health claims without getting approval from the FDA first. They just have to notify the FDA after the fact, and enforcement is extremely rare. The result is a market where manufacturers are essentially allowed to say whatever they want, as long as the wording follows a specific format.
-        </p>
+        <p style="font-size:0.875rem;color:var(--text-muted);line-height:1.7;text-align:justify;">A 1994 law called DSHEA&mdash;the Dietary Supplement Health and Education Act&mdash;allows supplement manufacturers to make health claims without getting approval from the FDA first. They just have to notify the FDA after the fact, and enforcement is extremely rare. The result is a market where manufacturers are essentially allowed to say whatever they want, as long as the wording follows a specific format.</p>
       </div>
-      <div class="fade-in delay-2">
+
+      <!-- Right -->
+      <div class="fade-in delay-2" style="max-width: 62%; margin-left: auto; text-align: right;">
         <h3 style="margin-bottom: 0.75rem;">The disclaimer is not a warning</h3>
-        <p>
-          You have seen it on every supplement bottle: <em>&ldquo;This statement has not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.&rdquo;</em> Most people assume this is a legal formality. It is actually a direct admission that nobody has verified the claim is scientifically valid. It is required by law precisely because the claim has not been checked.
-        </p>
+        <p style="font-size:0.875rem;color:var(--text-muted);line-height:1.7;text-align:justify;">You have seen it on every supplement bottle: <em>&ldquo;This statement has not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.&rdquo;</em> Most people assume this is a legal formality. It is actually a direct admission that nobody has verified the claim is scientifically valid. It is required by law precisely because the claim has not been checked.</p>
       </div>
-      <div class="fade-in delay-3">
+
+      <!-- Left -->
+      <div class="fade-in delay-3" style="max-width: 62%; margin-right: auto;">
         <h3 style="margin-bottom: 0.75rem;">Legal claims can still be false</h3>
-        <p>
-          The FDA reviews whether a claim is <em>formatted</em> correctly&mdash;not whether it is <em>true</em>. A supplement can legally claim to &ldquo;support bowel regularity&rdquo; even if there is no science behind that claim, as long as the wording is phrased in the right way. That is the gap ClaimCheck exists to fill.
-        </p>
+        <p style="font-size:0.875rem;color:var(--text-muted);line-height:1.7;text-align:justify;">The FDA reviews whether a claim is <em>formatted</em> correctly&mdash;not whether it is <em>true</em>. A supplement can legally claim to &ldquo;support bowel regularity&rdquo; even if there is no science behind that claim, as long as the wording is phrased in the right way. That is the gap ClaimCheck exists to fill.</p>
       </div>
-      <div class="fade-in delay-4">
+
+      <!-- Right -->
+      <div class="fade-in delay-4" style="max-width: 62%; margin-left: auto; text-align: right;">
         <h3 style="margin-bottom: 0.75rem;">You deserved better information</h3>
-        <p>
-          Americans spend over $50 billion a year on supplements, making decisions based largely on what the label says. Until now, there was no independent, science-based resource to check whether those labels were telling the truth. That is what ClaimCheck is built to be.
-        </p>
+        <p style="font-size:0.875rem;color:var(--text-muted);line-height:1.7;text-align:justify;">Americans spend over $50 billion a year on supplements, making decisions based largely on what the label says. Until now, there was no independent, science-based resource to check whether those labels were telling the truth. That is what ClaimCheck is built to be.</p>
       </div>
+
     </div>
   </div>
 </section>
@@ -294,7 +297,7 @@
       <a href="index.html" class="btn btn-outline-white">Back to Home</a>
     </div>
     <p class="fade-in delay-4" style="margin-top: 1.5rem; font-size: 0.875rem; color: rgba(255,255,255,0.4);">
-      No account required. No email needed. Free forever.
+      No account required. No email needed.
     </p>
   </div>
 </section>
