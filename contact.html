@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us — ClaimCheck</title>
+  <meta name="description" content="Get in touch with ClaimCheck — whether you're a consumer with a question or a manufacturer interested in certification." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ─── Navigation ─────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:0.6rem;text-decoration:none;">
+      <span style="font-size:1.125rem;font-weight:900;color:var(--green);letter-spacing:-0.03em;line-height:1;">ClaimCheck</span>
+      <img src="image/logoCC5.png" alt="ClaimCheck" style="height:38px;display:block;" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="for-businesses.html">For Businesses</a></li>
+      <li><a href="for-consumers.html">For Consumers</a></li>
+      <li><a href="database.html">Database</a></li>
+      <li><a href="contact.html" class="nav-cta" style="color:white;">Contact Us</a></li>
+    </ul>
+    <button class="nav-burger" id="burger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-drawer" id="drawer">
+  <a href="for-businesses.html">For Businesses</a>
+  <a href="for-consumers.html">For Consumers</a>
+  <a href="database.html">Database</a>
+  <a href="contact.html" class="cta-link">Contact Us &rarr;</a>
+</div>
+
+<!-- ─── Hero ───────────────────────────────────────────────────── -->
+<section class="section bg-navy" style="padding: 7rem 0 4rem;">
+  <div class="container" style="max-width: 700px;">
+    <p class="eyebrow fade-in">Get in Touch</p>
+    <h1 class="text-white fade-in delay-1">We&rsquo;d love to hear from you.</h1>
+    <p class="fade-in delay-2" style="font-size: 1.0625rem; color: rgba(255,255,255,0.72); line-height: 1.75; margin-top: 1.25rem;">
+      Whether you&rsquo;re a consumer with a question about a supplement, or a manufacturer interested in certification, we&rsquo;re here.
+    </p>
+  </div>
+</section>
+
+<!-- ─── Main ────────────────────────────────────────────────────── -->
+<section class="section bg-light">
+  <div class="container">
+    <div class="grid-2" style="align-items: start; gap: 4rem;">
+
+      <!-- Left: info -->
+      <div class="fade-in">
+        <p class="eyebrow" style="font-size:1.0625rem;">Who are you?</p>
+        <h2 style="margin-bottom: 2rem;">The right message<br>finds the right team.</h2>
+
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+          <div class="card" style="border-left: 3px solid var(--green);">
+            <h4 style="color: var(--navy); margin-bottom: 0.35rem;">I&rsquo;m a consumer</h4>
+            <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.65;">
+              Have a question about a product in our database, a supplement you&rsquo;d like us to evaluate, or a rating you&rsquo;d like to understand better? Use the form and we&rsquo;ll get back to you.
+            </p>
+            <a href="for-consumers.html" style="font-size: 0.8125rem; font-weight: 600; color: var(--green-dark); display: inline-block; margin-top: 0.75rem;">Learn about ClaimCheck for consumers &rarr;</a>
+          </div>
+
+          <div class="card" style="border-left: 3px solid var(--navy);">
+            <h4 style="color: var(--navy); margin-bottom: 0.35rem;">I&rsquo;m a manufacturer</h4>
+            <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.65;">
+              Interested in certifying your health claims, getting an evaluation, or learning about the consulting process? Tell us about your product and we&rsquo;ll be in touch within two business days.
+            </p>
+            <a href="for-businesses.html" style="font-size: 0.8125rem; font-weight: 600; color: var(--navy); display: inline-block; margin-top: 0.75rem;">Learn about ClaimCheck for businesses &rarr;</a>
+          </div>
+
+          <div style="padding: 1rem 1.25rem; background: rgba(46,204,113,0.07); border: 1px solid rgba(46,204,113,0.2); border-radius: var(--radius-sm);">
+            <p style="font-size: 0.8125rem; color: #1a6b3a; line-height: 1.65;">
+              <strong>Email us directly:</strong><br>
+              <a href="mailto:hello@claimcheck.com" style="color: #1a6b3a; font-weight: 600;">hello@claimcheck.com</a><br>
+              <span style="color: var(--text-muted);">We respond within two business days.</span>
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: form -->
+      <div class="card fade-in delay-2" style="padding: 2.25rem;">
+        <h3 style="margin-bottom: 0.25rem;">Send us a message</h3>
+        <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.5rem;">All fields are required.</p>
+
+        <form id="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Jane Smith" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="jane@example.com" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inquiry">I am a&hellip;</label>
+            <select id="inquiry" name="inquiry" required style="width:100%;padding:0.625rem 0.875rem;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:0.9375rem;font-family:inherit;color:var(--navy);background:white;appearance:none;-webkit-appearance:none;">
+              <option value="" disabled selected>Select one</option>
+              <option value="consumer">Consumer with a question</option>
+              <option value="manufacturer">Supplement manufacturer</option>
+              <option value="press">Press / media</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us what's on your mind&hellip;" required style="min-height:130px;"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-green" style="width:100%;justify-content:center;">
+            Send Message
+          </button>
+          <div id="form-success" style="display:none;margin-top:1rem;padding:0.875rem 1rem;background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.25);border-radius:8px;color:#1a8045;font-size:0.9rem;font-weight:500;">
+            Thanks! We&rsquo;ll be in touch within two business days.
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    drawer.classList.toggle('open');
+  });
+  drawer.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      burger.classList.remove('open');
+      drawer.classList.remove('open');
+    });
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    form.style.opacity = '0.5';
+    form.style.pointerEvents = 'none';
+    setTimeout(() => {
+      form.reset();
+      form.style.opacity = '1';
+      form.style.pointerEvents = 'auto';
+      document.getElementById('form-success').style.display = 'block';
+    }, 600);
+  }
+</script>
+</body>
+</html>

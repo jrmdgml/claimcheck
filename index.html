@@ -12,13 +12,15 @@
 <!-- ─── Navigation ─────────────────────────────────────────────── -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><img src="image/logoCC1.png" alt="ClaimCheck" style="height:38px;display:block;" /></a>
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:0.6rem;text-decoration:none;">
+      <span style="font-size:1.125rem;font-weight:900;color:var(--green);letter-spacing:-0.03em;line-height:1;">ClaimCheck</span>
+      <img src="image/logoCC5.png" alt="ClaimCheck" style="height:38px;display:block;" />
+    </a>
     <ul class="nav-links">
-      <li><a href="the-problem.html">The Problem</a></li>
       <li><a href="for-businesses.html">For Businesses</a></li>
       <li><a href="for-consumers.html">For Consumers</a></li>
       <li><a href="database.html">Database</a></li>
-      <li><a href="#contact" class="nav-cta">Get Certified</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
     </ul>
     <button class="nav-burger" id="burger" aria-label="Open menu">
       <span></span><span></span><span></span>
@@ -26,28 +28,36 @@
   </div>
 </nav>
 <div class="nav-drawer" id="drawer">
-  <a href="the-problem.html">The Problem</a>
   <a href="for-businesses.html">For Businesses</a>
   <a href="for-consumers.html">For Consumers</a>
   <a href="database.html">Database</a>
-  <a href="#contact" class="cta-link">Get Certified &rarr;</a>
+  <a href="contact.html" class="cta-link">Contact Us &rarr;</a>
 </div>
 
 <!-- ─── Section 1: Hero ────────────────────────────────────────── -->
 <section class="section-tall bg-navy" id="hero">
   <div class="container">
     <div class="hero-content">
-      <p class="eyebrow fade-in">Independent Scientific Certification</p>
-      <h1 class="text-white fade-in delay-1">
+      <!-- ClaimCheck + logo lockup -->
+      <div class="fade-in" style="display:flex;align-items:center;gap:1.25rem;margin-bottom:0.5rem;">
+        <span style="font-size:clamp(3rem,7vw,5rem);font-weight:900;color:var(--green);letter-spacing:-0.04em;line-height:1;">ClaimCheck</span>
+        <img src="image/logoCC5.png" alt="ClaimCheck logo" style="height:100px;display:block;" />
+      </div>
+      <p class="eyebrow fade-in delay-1" style="margin-bottom:1.75rem;text-align:center;">Independent Scientific Certification</p>
+
+      <h1 class="text-white fade-in delay-2" style="font-size:clamp(1.5rem,3.5vw,2.25rem);">
         The supplement industry makes thousands of health claims.<br>
         <span style="color: var(--green);">Almost none of them have been independently verified.</span>
       </h1>
-      <p class="fade-in delay-2" style="font-size: 1.125rem; max-width: 620px; margin: 1.75rem 0 2.5rem; color: rgba(255,255,255,0.72); line-height: 1.75;">
-        ClaimCheck is the first independent certification body that evaluates whether supplement health claims are actually supported by science&mdash;not just legally permitted.
+      <p class="fade-in delay-3" style="font-size: 1.0625rem; max-width: 620px; margin: 1.5rem 0 2rem; color: rgba(255,255,255,0.72); line-height: 1.75;">
+        ClaimCheck is the first independent certification body that evaluates whether supplement health claims are actually supported by science.
       </p>
-      <div class="btn-group fade-in delay-3">
-        <a href="#contact" class="btn btn-green">Get Certified</a>
-        <a href="the-problem.html" class="btn btn-outline-white">Learn About the Problem</a>
+      <div class="fade-in delay-3" style="text-align:center;margin-bottom:0.75rem;">
+        <p style="font-size:0.8125rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.45);">Learn more</p>
+      </div>
+      <div class="btn-group fade-in delay-4" style="justify-content:center;">
+        <a href="for-consumers.html" class="btn btn-green">For Consumers</a>
+        <a href="for-businesses.html" class="btn btn-outline-white">For Businesses</a>
       </div>
     </div>
   </div>
@@ -107,63 +117,14 @@
       </div>
     </div>
 
-    <p class="mt-4 fade-in" style="font-size: 0.9375rem;">
-      <a href="the-problem.html" class="link-arrow">
-        Learn more about the regulatory gap &rarr;
-      </a>
-    </p>
-  </div>
-</section>
-
-<!-- ─── Section 3: Our Solution ───────────────────────────────── -->
-<section class="section bg-light" id="solution">
-  <div class="container">
-    <div class="grid-2" style="align-items: center; gap: 4rem;">
-      <div>
-        <p class="eyebrow fade-in">Our Approach</p>
-        <h2 class="fade-in delay-1">Independent scientific validation. Two dimensions. One clear signal.</h2>
-        <p class="mt-3 fade-in delay-2">
-          ClaimCheck evaluates every claim on two independent axes. The first is <strong>regulatory compliance</strong>&mdash;is the claim legally structured correctly under DSHEA? The second is <strong>scientific validity</strong>&mdash;does the peer-reviewed evidence actually support what the claim says?
-        </p>
-        <p class="mt-2 fade-in delay-2">
-          A claim can pass one axis and fail the other. Most databases only check one. We assess both&mdash;and we publish every result, regardless of whether a manufacturer engaged with us.
-        </p>
-        <div class="mt-4 fade-in delay-3">
-          <a href="for-businesses.html" class="btn btn-green">See How Certification Works</a>
-        </div>
-      </div>
-
-      <div>
-        <div class="rating-tiers fade-in delay-2">
-          <div class="rating-tier">
-            <div class="tier-indicator tier-green"></div>
-            <div>
-              <h4 style="color: #1a8045;">GREEN &mdash; Strong Evidence</h4>
-              <p>Strong, consistent, replicated scientific evidence supports the claim. The mechanism is well understood and backed by multiple high-quality studies.</p>
-            </div>
-          </div>
-          <div class="rating-tier">
-            <div class="tier-indicator tier-orange"></div>
-            <div>
-              <h4 style="color: #8a5c00;">ORANGE &mdash; Limited Evidence</h4>
-              <p>Limited, mixed, or low-quality evidence. Some research supports the claim, but the science is inconclusive, preliminary, or methodologically weak.</p>
-            </div>
-          </div>
-          <div class="rating-tier">
-            <div class="tier-indicator tier-red"></div>
-            <div>
-              <h4 style="color: #b92a18;">RED &mdash; No Credible Evidence</h4>
-              <p>No meaningful scientific evidence supports the claim. The ingredient, dose, or mechanism is not supported by credible, peer-reviewed research.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="mt-4 fade-in" style="text-align:center;">
+      <a href="the-problem.html" class="btn btn-outline-navy">Learn more about the regulatory gap</a>
     </div>
   </div>
 </section>
 
 <!-- ─── Section 4: Claim Examples ────────────────────────────── -->
-<section class="section bg-white" id="examples">
+<section class="section bg-light" id="examples">
   <div class="container">
     <div class="section-heading fade-in">
       <p class="eyebrow">Real Evaluations</p>
@@ -212,142 +173,75 @@
         </p>
       </div>
     </div>
+    <div class="mt-4 fade-in" style="text-align:center;">
+      <a href="database.html" class="btn btn-outline-navy">See more examples</a>
+    </div>
   </div>
 </section>
 
 <!-- ─── Section 5: The Database ───────────────────────────────── -->
-<section class="section bg-navy" id="database">
+<section class="section bg-white" id="database">
   <div class="container">
     <div class="grid-2" style="align-items: center; gap: 4rem;">
-      <div class="text-white">
-        <p class="eyebrow fade-in">Public Database</p>
+      <div>
+        <p class="eyebrow fade-in" style="font-size:1.0625rem;">Public Database</p>
         <h2 class="fade-in delay-1">One database.<br>Full transparency.</h2>
-        <p class="mt-3 fade-in delay-2" style="color: rgba(255,255,255,0.72); font-size: 1.0625rem; line-height: 1.75;">
+        <p class="mt-3 fade-in delay-2" style="font-size: 1.0625rem; line-height: 1.75;">
           Every claim we evaluate&mdash;whether or not a manufacturer paid for certification&mdash;goes into our public database, free for anyone to search.
         </p>
-        <p class="mt-2 fade-in delay-2" style="color: rgba(255,255,255,0.72); line-height: 1.75;">
+        <p class="mt-2 fade-in delay-2" style="color: var(--text-muted); line-height: 1.75;">
           Consumers use it to make informed decisions. Manufacturers use it to benchmark their claims against competitors. And products with unverified claims sit in the database whether their manufacturers engage with us or not. Transparency is the point.
         </p>
         <div class="btn-group mt-4 fade-in delay-3">
           <a href="for-businesses.html" class="btn btn-green">For Businesses &rarr;</a>
-          <a href="for-consumers.html" class="btn btn-outline-white">For Consumers &rarr;</a>
+          <a href="for-consumers.html" class="btn btn-outline-navy">For Consumers &rarr;</a>
         </div>
       </div>
 
       <div class="fade-in delay-2">
-        <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 2rem;">
-          <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 1.25rem;">Database Preview</p>
-          <!-- Mock DB rows -->
+        <div style="position:relative;border-radius:14px;overflow:hidden;" onmouseenter="this.querySelector('.db-hover-btn').style.opacity='1'" onmouseleave="this.querySelector('.db-hover-btn').style.opacity='0'">
+        <div class="db-hover-btn" style="position:absolute;inset:0;background:rgba(10,22,40,0.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.25s ease;z-index:2;border-radius:14px;">
+          <a href="database.html" class="btn btn-green">Search the Database</a>
+        </div>
+        <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 14px; padding: 2rem;">
+          <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray-600); margin-bottom: 1.25rem;">Database Preview</p>
           <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.07);">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid var(--gray-200);">
               <div>
-                <p style="font-size: 0.875rem; font-weight: 600; color: white; margin-bottom: 0.1rem;">Vitamin D &mdash; Bone health</p>
-                <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">Certified &middot; 2025</p>
+                <p style="font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.1rem;">Vitamin D &mdash; Bone health</p>
+                <p style="font-size: 0.75rem; color: var(--gray-400);">Certified &middot; 2025</p>
               </div>
               <span class="badge badge-green"><span class="badge-dot"></span>GREEN</span>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.07);">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid var(--gray-200);">
               <div>
-                <p style="font-size: 0.875rem; font-weight: 600; color: white; margin-bottom: 0.1rem;">Ashwagandha &mdash; Stress relief</p>
-                <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">Evaluated &middot; 2025</p>
+                <p style="font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.1rem;">Ashwagandha &mdash; Stress relief</p>
+                <p style="font-size: 0.75rem; color: var(--gray-400);">Evaluated &middot; 2025</p>
               </div>
               <span class="badge badge-orange"><span class="badge-dot"></span>ORANGE</span>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.07);">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid var(--gray-200);">
               <div>
-                <p style="font-size: 0.875rem; font-weight: 600; color: white; margin-bottom: 0.1rem;">Biotin &mdash; Hair growth</p>
-                <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">Evaluated &middot; 2024</p>
+                <p style="font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.1rem;">Biotin &mdash; Hair growth</p>
+                <p style="font-size: 0.75rem; color: var(--gray-400);">Evaluated &middot; 2024</p>
               </div>
               <span class="badge badge-orange"><span class="badge-dot"></span>ORANGE</span>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.07);">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid var(--gray-200);">
               <div>
-                <p style="font-size: 0.875rem; font-weight: 600; color: white; margin-bottom: 0.1rem;">Calcium &mdash; Bowel regularity</p>
-                <p style="font-size: 0.75rem; color: rgba(255,255,255,0.45);">Evaluated &middot; 2024</p>
+                <p style="font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.1rem;">Calcium &mdash; Bowel regularity</p>
+                <p style="font-size: 0.75rem; color: var(--gray-400);">Evaluated &middot; 2024</p>
               </div>
               <span class="badge badge-red"><span class="badge-dot"></span>RED</span>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── Section 6: Contact ────────────────────────────────────── -->
-<section class="section bg-light" id="contact">
-  <div class="container">
-    <div class="grid-2" style="align-items: start; gap: 4rem;">
-      <div>
-        <p class="eyebrow fade-in">Get in Touch</p>
-        <h2 class="fade-in delay-1">Start the conversation</h2>
-        <p class="mt-3 fade-in delay-2">
-          We&rsquo;re currently offering first evaluations to qualifying manufacturers at no cost. If you make a supplement and want to know where your claims stand, reach out.
-        </p>
-        <div class="mt-4 fade-in delay-2" style="display: flex; flex-direction: column; gap: 0.875rem;">
-          <div style="display: flex; align-items: center; gap: 0.75rem;">
-            <div class="icon-wrap icon-green" style="margin-bottom: 0; width: 40px; height: 40px; flex-shrink: 0;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#1a8045" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                <polyline points="22,6 12,13 2,6"/>
-              </svg>
-            </div>
-            <div>
-              <p style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray-600); margin-bottom: 0.15rem;">Email</p>
-              <a href="mailto:hello@claimcheck.com" style="font-size: 1rem; font-weight: 600; color: var(--navy);">hello@claimcheck.com</a>
-            </div>
-          </div>
-          <p style="font-size: 0.875rem; color: var(--text-muted); padding-left: 52px;">
-            First evaluations for qualifying manufacturers are currently offered at no cost. We&rsquo;ll respond within two business days.
-          </p>
         </div>
       </div>
-
-      <div class="card fade-in delay-2" style="padding: 2.25rem;">
-        <form id="contact-form" onsubmit="handleSubmit(event)">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" id="name" name="name" placeholder="Jane Smith" required />
-            </div>
-            <div class="form-group">
-              <label for="company">Company</label>
-              <input type="text" id="company" name="company" placeholder="Acme Supplements" required />
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="jane@company.com" required />
-          </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" placeholder="Tell us about your product and the claims you&rsquo;d like evaluated&hellip;" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-green" style="width: 100%; justify-content: center;">
-            Send Message
-          </button>
-          <div id="form-success" style="display:none; margin-top: 1rem; padding: 0.875rem 1rem; background: rgba(46,204,113,0.1); border: 1px solid rgba(46,204,113,0.25); border-radius: 8px; color: #1a8045; font-size: 0.9rem; font-weight: 500;">
-            Thanks! We&rsquo;ll be in touch within two business days.
-          </div>
-        </form>
-      </div>
     </div>
   </div>
 </section>
 
-<!-- ─── Footer ────────────────────────────────────────────────── -->
-<footer>
-  <div class="footer-inner">
-    <span class="footer-logo"><img src="image/logoCC1.png" alt="ClaimCheck" style="height:30px;display:block;" /></span>
-    <nav class="footer-links">
-      <a href="the-problem.html">The Problem</a>
-      <a href="for-businesses.html">For Businesses</a>
-      <a href="for-consumers.html">For Consumers</a>
-      <a href="#contact">Get Certified</a>
-    </nav>
-  </div>
-  <p class="footer-copy">&copy; 2025 ClaimCheck. All rights reserved. &middot; <a href="mailto:hello@claimcheck.com">hello@claimcheck.com</a></p>
-</footer>
 
 <script>
   // ─── Mobile Nav ───────────────────────────────────────────────
@@ -378,18 +272,6 @@
 
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-  // ─── Contact Form ─────────────────────────────────────────────
-  function handleSubmit(e) {
-    e.preventDefault();
-    document.getElementById('contact-form').style.opacity = '0.5';
-    document.getElementById('contact-form').style.pointerEvents = 'none';
-    setTimeout(() => {
-      document.getElementById('contact-form').reset();
-      document.getElementById('contact-form').style.opacity = '1';
-      document.getElementById('contact-form').style.pointerEvents = 'auto';
-      document.getElementById('form-success').style.display = 'block';
-    }, 600);
-  }
 </script>
 </body>
 </html>

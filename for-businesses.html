@@ -12,13 +12,15 @@
 <!-- ─── Navigation ─────────────────────────────────────────────── -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><img src="image/logoCC4.png" alt="ClaimCheck" style="height:38px;display:block;" /></a>
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:0.6rem;text-decoration:none;">
+      <span style="font-size:1.125rem;font-weight:900;color:var(--green);letter-spacing:-0.03em;line-height:1;">ClaimCheck</span>
+      <img src="image/logoCC5.png" alt="ClaimCheck" style="height:38px;display:block;" />
+    </a>
     <ul class="nav-links">
-      <li><a href="the-problem.html">The Problem</a></li>
       <li><a href="for-businesses.html" style="color:white;">For Businesses</a></li>
       <li><a href="for-consumers.html">For Consumers</a></li>
       <li><a href="database.html">Database</a></li>
-      <li><a href="#contact" class="nav-cta">Get Certified</a></li>
+      <li><a href="#contact" class="nav-cta">Contact Us</a></li>
     </ul>
     <button class="nav-burger" id="burger" aria-label="Open menu">
       <span></span><span></span><span></span>
@@ -26,11 +28,10 @@
   </div>
 </nav>
 <div class="nav-drawer" id="drawer">
-  <a href="the-problem.html">The Problem</a>
   <a href="for-businesses.html">For Businesses</a>
   <a href="for-consumers.html">For Consumers</a>
   <a href="database.html">Database</a>
-  <a href="#contact" class="cta-link">Get Certified &rarr;</a>
+  <a href="#contact" class="cta-link">Contact Us &rarr;</a>
 </div>
 
 <!-- ─── Section 1: Hero ────────────────────────────────────────── -->
@@ -409,19 +410,6 @@
   </div>
 </section>
 
-<!-- ─── Footer ────────────────────────────────────────────────── -->
-<footer>
-  <div class="footer-inner">
-    <span class="footer-logo"><img src="image/logoCC1.png" alt="ClaimCheck" style="height:30px;display:block;" /></span>
-    <nav class="footer-links">
-      <a href="the-problem.html">The Problem</a>
-      <a href="for-businesses.html">For Businesses</a>
-      <a href="for-consumers.html">For Consumers</a>
-      <a href="#contact">Get Certified</a>
-    </nav>
-  </div>
-  <p class="footer-copy">&copy; 2025 ClaimCheck. All rights reserved. &middot; <a href="mailto:hello@claimcheck.com">hello@claimcheck.com</a></p>
-</footer>
 
 <script>
   const burger = document.getElementById('burger');

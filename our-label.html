@@ -12,13 +12,15 @@
 <!-- ─── Navigation ─────────────────────────────────────────────── -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><img src="image/logoCC4.png" alt="ClaimCheck" style="height:38px;display:block;" /></a>
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:0.6rem;text-decoration:none;">
+      <span style="font-size:1.125rem;font-weight:900;color:var(--green);letter-spacing:-0.03em;line-height:1;">ClaimCheck</span>
+      <img src="image/logoCC5.png" alt="ClaimCheck" style="height:38px;display:block;" />
+    </a>
     <ul class="nav-links">
-      <li><a href="the-problem.html">The Problem</a></li>
       <li><a href="for-businesses.html" style="color:white;">For Businesses</a></li>
       <li><a href="for-consumers.html">For Consumers</a></li>
       <li><a href="database.html">Database</a></li>
-      <li><a href="index.html#contact" class="nav-cta">Get Certified</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
     </ul>
     <button class="nav-burger" id="burger" aria-label="Open menu">
       <span></span><span></span><span></span>
@@ -26,11 +28,10 @@
   </div>
 </nav>
 <div class="nav-drawer" id="drawer">
-  <a href="the-problem.html">The Problem</a>
   <a href="for-businesses.html">For Businesses</a>
   <a href="for-consumers.html">For Consumers</a>
   <a href="database.html">Database</a>
-  <a href="index.html#contact" class="cta-link">Get Certified &rarr;</a>
+  <a href="contact.html" class="cta-link">Contact Us &rarr;</a>
 </div>
 
 <!-- ─── Hero ───────────────────────────────────────────────────── -->
@@ -46,7 +47,7 @@
         The ClaimCheck certification logo is more than a badge. It tells consumers, retailers, and health professionals that the health claims on your label have been independently reviewed against the peer-reviewed scientific literature&mdash;and held up.
       </p>
       <div class="btn-group fade-in delay-3">
-        <a href="for-businesses.html#contact" class="btn btn-green">Get Certified</a>
+        <a href="contact.html" class="btn btn-green">Get Certified</a>
         <a href="for-businesses.html#how-it-works" class="btn btn-outline-white">How It Works</a>
       </div>
     </div>
@@ -184,26 +185,12 @@
       Get in touch to start the certification process. First evaluations for qualifying manufacturers are currently offered at no cost.
     </p>
     <div class="btn-group fade-in delay-3" style="justify-content: center; margin-top: 2rem;">
-      <a href="for-businesses.html#contact" class="btn btn-green">Get Certified</a>
+      <a href="contact.html" class="btn btn-green">Get Certified</a>
       <a href="for-businesses.html" class="btn btn-outline-navy">Back to For Businesses</a>
     </div>
   </div>
 </section>
 
-<!-- ─── Footer ────────────────────────────────────────────────── -->
-<footer>
-  <div class="footer-inner">
-    <span class="footer-logo"><img src="image/logoCC4.png" alt="ClaimCheck" style="height:30px;display:block;" /></span>
-    <nav class="footer-links">
-      <a href="the-problem.html">The Problem</a>
-      <a href="for-businesses.html">For Businesses</a>
-      <a href="for-consumers.html">For Consumers</a>
-      <a href="database.html">Database</a>
-      <a href="index.html#contact">Get Certified</a>
-    </nav>
-  </div>
-  <p class="footer-copy">&copy; 2026 ClaimCheck. All rights reserved. &middot; <a href="mailto:hello@claimcheck.com">hello@claimcheck.com</a></p>
-</footer>
 
 <script>
   const burger = document.getElementById('burger');
