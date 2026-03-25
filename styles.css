@@ -308,6 +308,14 @@ p { color: var(--text-muted); line-height: 1.78; }
   box-shadow: var(--shadow-hover);
 }
 
+.card-hover-green {
+  border-top: 3px solid var(--gray-200);
+  transition: border-top-color 0.25s, transform 0.2s, box-shadow 0.2s;
+}
+.card-hover-green:hover {
+  border-top-color: var(--green);
+}
+
 /* ─── Icon boxes ──────────────────────────────────────────────────── */
 .icon-wrap {
   width: 48px;
