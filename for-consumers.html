@@ -34,21 +34,53 @@
 </div>
 
 <!-- ─── Section 1: Hero ────────────────────────────────────────── -->
-<section class="section-tall bg-navy">
-  <div class="container">
-    <div style="max-width: 720px;">
-      <p class="eyebrow fade-in">For Supplement Shoppers</p>
-      <h1 class="text-white fade-in delay-1">
-        Finally, someone checked.
-      </h1>
-      <p class="fade-in delay-2" style="font-size: 1.2rem; max-width: 580px; margin: 1.75rem 0 2.5rem; color: rgba(255,255,255,0.75); line-height: 1.78;">
-        ClaimCheck independently evaluates the health claims on supplement labels&mdash;so you don&rsquo;t have to take the manufacturer&rsquo;s word for it.
-      </p>
-      <div class="btn-group fade-in delay-3">
-        <a href="database.html" class="btn btn-green">Search the Database</a>
-        <a href="#how-it-works" class="btn btn-outline-white">How It Works</a>
-      </div>
+<section class="bg-navy" style="min-height:100vh;display:flex;align-items:center;padding:7rem 0 5rem;">
+  <style>
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    #cycling-claim { transition: opacity 0.4s ease; }
+  </style>
+
+  <div class="container" style="position:relative;z-index:2;max-width:760px;">
+
+    <!-- Dedicated claims showcase — 5 positions, max 2–3 visible at once -->
+    <div style="position:relative;height:215px;margin-bottom:2rem;border-bottom:1px solid rgba(255,255,255,0.1);opacity:0;animation:heroFadeUp 0.7s ease 0.1s forwards;" aria-hidden="true">
+      <!-- top-left -->
+      <p id="cs-0" style="position:absolute;left:0;top:0;font-size:1.25rem;font-weight:700;font-style:italic;color:rgba(255,255,255,0.85);max-width:380px;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
+      <!-- top-right -->
+      <p id="cs-1" style="position:absolute;right:0;top:4px;font-size:1rem;font-weight:600;font-style:italic;color:rgba(255,255,255,0.6);max-width:300px;text-align:right;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
+      <!-- center -->
+      <p id="cs-2" style="position:absolute;left:12%;top:82px;font-size:1.5rem;font-weight:800;font-style:italic;color:rgba(255,255,255,0.92);max-width:500px;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
+      <!-- bottom-left -->
+      <p id="cs-3" style="position:absolute;left:0;bottom:12px;font-size:1.0625rem;font-weight:600;font-style:italic;color:rgba(255,255,255,0.65);max-width:360px;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
+      <!-- bottom-right -->
+      <p id="cs-4" style="position:absolute;right:0;bottom:12px;font-size:0.9375rem;font-weight:500;font-style:italic;color:rgba(255,255,255,0.45);max-width:260px;text-align:right;line-height:1.3;opacity:0;transition:opacity 0.55s ease;"></p>
     </div>
+
+    <!-- Question -->
+    <h1 style="color:white;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.15;margin-bottom:1.25rem;opacity:0;animation:heroFadeUp 0.8s ease 0.4s forwards;">
+      Do you trust your<br>food supplement?
+    </h1>
+
+    <!-- Answer -->
+    <p style="color:rgba(255,255,255,0.85);font-size:clamp(1.375rem,3vw,2rem);font-weight:700;line-height:1.2;margin-bottom:2rem;opacity:0;animation:heroFadeUp 0.8s ease 0.85s forwards;">
+      Finally, someone checked.
+    </p>
+
+    <!-- ClaimCheck + logo lockup -->
+    <div style="display:flex;align-items:center;gap:1.25rem;margin-bottom:2.75rem;opacity:0;animation:heroFadeUp 0.8s ease 1.25s forwards;">
+      <span style="font-size:clamp(2.75rem,7vw,5rem);font-weight:900;color:var(--green);letter-spacing:-0.04em;line-height:1;">ClaimCheck</span>
+      <img src="image/logoCC5.png" alt="ClaimCheck logo" style="height:100px;display:block;" />
+    </div>
+
+    <!-- Buttons -->
+    <div class="btn-group" style="opacity:0;animation:heroFadeUp 0.8s ease 1.65s forwards;">
+      <a href="database.html" class="btn btn-green">Search the Database</a>
+      <a href="#how-it-works" class="btn btn-outline-white">How It Works</a>
+    </div>
+
   </div>
 </section>
 
@@ -297,6 +329,54 @@
   }, { threshold: 0.12 });
 
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ─── Shady claims: 5 positions, max 3 visible, regular rhythm ──
+  const shadyClaims = [
+    '\u201cBoosts metabolism by 300%\u201d',
+    '\u201cClinically proven to burn fat\u201d',
+    '\u201cDetoxifies your liver in 7 days\u201d',
+    '\u201cDoctor recommended formula\u201d',
+    '\u201cIncreases testosterone naturally\u201d',
+    '\u201c100% natural \u0026 safe\u201d',
+    '\u201cSupports healthy brain function\u201d',
+    '\u201cEnhances cellular energy\u201d',
+    '\u201cScientifically formulated\u201d',
+    '\u201cClinically tested ingredients\u201d',
+    '\u201cFlushes toxins from your body\u201d',
+    '\u201cRevitalizes your immune system\u201d',
+    '\u201cRestore hormonal balance naturally\u201d',
+    '\u201cAnti-aging superfood blend\u201d',
+    '\u201cMD formulated for peak performance\u201d',
+  ];
+  const csSlots   = ['cs-0','cs-1','cs-2','cs-3','cs-4'];
+  const MAX_VIS   = 3;
+  const TICK      = 1700;
+  let activeQueue = [];
+  let claimCtr    = 0;
+
+  function csTick() {
+    const inactive = csSlots.filter(id => !activeQueue.includes(id));
+    if (!inactive.length) return;
+
+    // Pick a random inactive slot, assign new claim, fade in
+    const nextId = inactive[Math.floor(Math.random() * inactive.length)];
+    const el = document.getElementById(nextId);
+    el.textContent = shadyClaims[claimCtr % shadyClaims.length];
+    claimCtr++;
+    requestAnimationFrame(() => { el.style.opacity = '1'; });
+    activeQueue.push(nextId);
+
+    // If over max, fade out the oldest
+    if (activeQueue.length > MAX_VIS) {
+      const oldId = activeQueue.shift();
+      document.getElementById(oldId).style.opacity = '0';
+    }
+  }
+
+  // Build up 1 → 2 → 3 visible, then maintain rhythm at TICK interval
+  csTick();
+  setTimeout(csTick, TICK);
+  setTimeout(() => { csTick(); setInterval(csTick, TICK); }, TICK * 2);
 </script>
 </body>
 </html>
